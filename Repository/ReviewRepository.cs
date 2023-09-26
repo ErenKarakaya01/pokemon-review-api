@@ -23,6 +23,18 @@ namespace PokemonReviewApp.Repository
             return Save();
         }
 
+        public bool DeleteReview(Review review)
+        {
+            context.Remove(review);
+            return Save();
+        }
+
+        public bool DeleteReviews(ICollection<Review> reviews)
+        {
+            context.RemoveRange(reviews);
+            return Save();
+        }
+
         public Review GetReview(int reviewId)
         {
             return context.Reviews.Where(r => r.Id == reviewId).FirstOrDefault();
@@ -47,6 +59,12 @@ namespace PokemonReviewApp.Repository
         {
             var saved = context.SaveChanges();
             return saved > 0 ? true : false;
+        }
+
+        public bool UpdateReview(Review review)
+        {
+            context.Update(review);
+            return Save();
         }
     }
 }

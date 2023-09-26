@@ -103,5 +103,56 @@ namespace PokemonReviewApp.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{reviewId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateReview(int reviewId, [FromBody] ReviewDto updatedReview)
+        {
+            if (updatedReview == null)
+                return BadRequest(ModelState);
+
+            if (reviewId != updatedReview.Id)
+                return BadRequest(ModelState);
+
+            if (!reviewRepository.ReviewExists(reviewId))
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var reviewMap = mapper.Map<Review>(updatedReview);
+
+            if (!reviewRepository.UpdateReview(reviewMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating review");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
+
+        // Added missing delete range of reviews by a reviewer **>CK
+        [HttpDelete("/DeleteReviewsByReviewer/{reviewerId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteReviewsByReviewer(int reviewerId)
+        {
+            if (!reviewerRepository.ReviewerExists(reviewerId))
+                return NotFound();
+
+            var reviewsToDelete = reviewerRepository.GetReviewsByReviewer(reviewerId);
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            if (!reviewRepository.DeleteReviews(reviewsToDelete))
+            {
+                ModelState.AddModelError("", "error deleting reviews");
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
+        }
     }
 }
