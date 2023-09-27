@@ -2,6 +2,9 @@
 
 Welcome to the Pokemon Review API! This ASP.NET Core API is built using .NET 6 and allows users to review and rate their favorite Pokemon. Whether you're a Pokemon enthusiast or just curious about what others think, this API provides a platform for sharing your thoughts and opinions on these beloved creatures.
 
+<kbd>![UMLDiagram](https://github.com/ErenKarakaya01/pokemon-review-api/assets/58625563/c263c460-5d1d-4b45-a708-ba1d1e4967d1)
+</kbd>
+
 ## Getting Started
 
 To get started with the Pokemon Review API, follow these steps:
